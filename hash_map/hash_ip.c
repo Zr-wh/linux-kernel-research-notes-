@@ -3,14 +3,14 @@
             
 
  ******************************************************************************
-  ÎÄ ¼ş Ãû   : hash_ip.c
-  °æ ±¾ ºÅ   : ³õ¸å
-  ×÷    Õß   : 
-  Éú³ÉÈÕÆÚ   : 2023Äê4ÔÂ13ÈÕ
-  ×î½üĞŞ¸Ä   :
-  ¹¦ÄÜÃèÊö   : ½â¶Áhi3660µÄipµØÖ·¹şÏ£Ó³Éäµ½macµØÖ·µÄÊµÏÖ
-  º¯ÊıÁĞ±í   :
-  ĞŞ¸ÄÀúÊ·   :
+  æ–‡ ä»¶ å   : hash_ip.c
+  ç‰ˆ æœ¬ å·   : åˆç¨¿
+  ä½œ    è€…   : 
+  ç”Ÿæˆæ—¥æœŸ   : 2023å¹´4æœˆ13æ—¥
+  æœ€è¿‘ä¿®æ”¹   :
+  åŠŸèƒ½æè¿°   : è§£è¯»hi3660çš„ipåœ°å€å“ˆå¸Œæ˜ å°„åˆ°macåœ°å€çš„å®ç°
+  å‡½æ•°åˆ—è¡¨   :
+  ä¿®æ”¹å†å²   :
 
 
 ******************************************************************************/
@@ -18,27 +18,27 @@
 git remote add origin "https://github.com/lijianyi1997/NorwegianWood.git"
 
 
-//Ã¿¸ö¹şÏ£½ÚµãÎ¬»¤µÄ½á¹¹Ìå£¬½¨Á¢ipµØÖ·ºÍmacµØÖ·µÄÓ³Éä¹ØÏµ
+//æ¯ä¸ªå“ˆå¸ŒèŠ‚ç‚¹ç»´æŠ¤çš„ç»“æ„ä½“ï¼Œå»ºç«‹ipåœ°å€å’Œmacåœ°å€çš„æ˜ å°„å…³ç³»
 typedef struct
 {
-    oal_dlist_head_stru     st_entry;                       /* ¸Ã½á¹¹ÌåµÄÁ´±íÏî */
-    oal_uint32              ul_ipv4;                        /* ¼ÇÂ¼¶ÔÓ¦µÄipv4µØÖ· */
-    oal_uint8               auc_mac[WLAN_MAC_ADDR_LEN];     /* ¼ÇÂ¼¶ÔÓ¦µÄmacµØÖ· */
+    oal_dlist_head_stru     st_entry;                       /* è¯¥ç»“æ„ä½“çš„é“¾è¡¨é¡¹ */
+    oal_uint32              ul_ipv4;                        /* è®°å½•å¯¹åº”çš„ipv4åœ°å€ */
+    oal_uint8               auc_mac[WLAN_MAC_ADDR_LEN];     /* è®°å½•å¯¹åº”çš„macåœ°å€ */
     oal_uint8               auc_rsv[2];
-    //»¹¿ÉÒÔÎ¬»¤¶à¸öĞÅÏ¢£¬¼´ipµØÖ·¶ÔÓ¦µÄÆäËüĞÅÏ¢£¬²»Ö»ÊÇmacµØÖ·
+    //è¿˜å¯ä»¥ç»´æŠ¤å¤šä¸ªä¿¡æ¯ï¼Œå³ipåœ°å€å¯¹åº”çš„å…¶å®ƒä¿¡æ¯ï¼Œä¸åªæ˜¯macåœ°å€
 }hmac_proxy_ipv4_hash_stru;
 
-/* ¹ØÁªÓÃ»§µÄ×î´ó¸öÊı */
+/* å…³è”ç”¨æˆ·çš„æœ€å¤§ä¸ªæ•° */
 #define WLAN_ASSOC_USER_MAX_NUM_LIMIT       8
-#define MAC_VAP_USER_HASH_INVALID_VALUE      0xFFFFFFFF                         /* HSAH·Ç·¨Öµ */
-#define MAC_VAP_USER_HASH_MAX_VALUE         (WLAN_ASSOC_USER_MAX_NUM_LIMIT * 2)       /* 2ÎªÀ©Õ¹Òò×Ó */
+#define MAC_VAP_USER_HASH_INVALID_VALUE      0xFFFFFFFF                         /* HSAHéæ³•å€¼ */
+#define MAC_VAP_USER_HASH_MAX_VALUE         (WLAN_ASSOC_USER_MAX_NUM_LIMIT * 2)       /* 2ä¸ºæ‰©å±•å› å­ */
 
 
-/* ´úÀíÓÃ»§µÄ×î´ó¸öÊı 16*/
+/* ä»£ç†ç”¨æˆ·çš„æœ€å¤§ä¸ªæ•° 16*/
 #define HMAC_PROXY_IPV4_HASHSIZE        MAC_VAP_USER_HASH_MAX_VALUE
 // #define HMAC_PROXY_IPV6_HASHSIZE        MAC_VAP_USER_HASH_MAX_VALUE
 
-//nÎªipv4µØÖ·£¬È¡ipv4µØÖ·µÄ×îºóÒ»¸ö×Ö½Ú£¬Èç192.168.1.3£¬È¡3
+//nä¸ºipv4åœ°å€ï¼Œå–ipv4åœ°å€çš„æœ€åä¸€ä¸ªå­—èŠ‚ï¼Œå¦‚192.168.1.3ï¼Œå–3
 #define HMAC_PROXY_IPV4_HASH(n) \
         (((const oal_uint8 *)(&n))[3] % HMAC_PROXY_IPV4_HASHSIZE)
 
@@ -46,25 +46,25 @@ typedef struct
 //         (((const oal_uint8 *)(n))[15] % HMAC_PROXY_IPV6_HASHSIZE)
 
 
-/*»ªÎªhi3386Î¬»¤µÄ VAPµÄÊı¾İ½á¹¹ */
+/*hi3386ç»´æŠ¤çš„ VAPçš„æ•°æ®ç»“æ„ */
 typedef struct
 {                           
-   mac_vap_proxyarp_stru              *pst_vap_proxyarp;    /* ´úÀíarpµÄ½á¹¹Ìå */
+   mac_vap_proxyarp_stru              *pst_vap_proxyarp;    /* ä»£ç†arpçš„ç»“æ„ä½“ */
 
 }mac_vap_stru;
 
-//´úÀíarpµÄ½á¹¹Ìå£¬ÓĞ16¸ö¹şÏ£±íÏî£¬Ã¿¸ö¹şÏ£±íÏîÎ¬»¤Ò»¸öÁ´±í£¬Á´±íÖĞµÄÃ¿¸ö½Úµã¶¼ÊÇÒ»¸öÓÃ»§µÄĞÅÏ¢
+//ä»£ç†arpçš„ç»“æ„ä½“ï¼Œæœ‰16ä¸ªå“ˆå¸Œè¡¨é¡¹ï¼Œæ¯ä¸ªå“ˆå¸Œè¡¨é¡¹ç»´æŠ¤ä¸€ä¸ªé“¾è¡¨ï¼Œé“¾è¡¨ä¸­çš„æ¯ä¸ªèŠ‚ç‚¹éƒ½æ˜¯ä¸€ä¸ªç”¨æˆ·çš„ä¿¡æ¯
 typedef struct
 {
     oal_dlist_head_stru                 ast_ipv4_head[MAC_VAP_USER_HASH_MAX_VALUE];
     oal_dlist_head_stru                 ast_ipv6_head[MAC_VAP_USER_HASH_MAX_VALUE];
     oal_bool_enum_uint8                 en_is_proxyarp;
-    oal_uint8                           uc_ipv4_num;        /* ¼ÇÂ¼ipv4µÄÌõÊı */
-    oal_uint8                           uc_ipv6_num;        /* ¼ÇÂ¼ipv6µÄÌõÊı */
+    oal_uint8                           uc_ipv4_num;        /* è®°å½•ipv4çš„æ¡æ•° */
+    oal_uint8                           uc_ipv6_num;        /* è®°å½•ipv6çš„æ¡æ•° */
 }mac_vap_proxyarp_stru;
 
 
-//³õÊ¼»¯¹şÏ£½ÚµãµÄÊı¾İ½á¹¹£¬Ò»¹²16¸ö
+//åˆå§‹åŒ–å“ˆå¸ŒèŠ‚ç‚¹çš„æ•°æ®ç»“æ„ï¼Œä¸€å…±16ä¸ª
 oal_void hmac_proxy_arp_init(mac_vap_stru *pst_mac_vap)
 {
     oal_uint32              ul_loop = 0;
@@ -77,7 +77,7 @@ oal_void hmac_proxy_arp_init(mac_vap_stru *pst_mac_vap)
     }
 
 
-    /* ÉêÇë¹şÏ£½ÚµãµÄËùÓĞÄÚ´æ £¬*/
+    /* ç”³è¯·å“ˆå¸ŒèŠ‚ç‚¹çš„æ‰€æœ‰å†…å­˜ ï¼Œ*/
     pst_mac_vap->pst_vap_proxyarp = OAL_MEM_ALLOC(OAL_MEM_POOL_ID_LOCAL, OAL_SIZEOF(mac_vap_proxyarp_stru), OAL_TRUE);
     if (OAL_PTR_NULL == pst_mac_vap->pst_vap_proxyarp)
     {
@@ -87,7 +87,7 @@ oal_void hmac_proxy_arp_init(mac_vap_stru *pst_mac_vap)
 
     OAL_MEMZERO(pst_mac_vap->pst_vap_proxyarp, OAL_SIZEOF(mac_vap_proxyarp_stru));
 
-   //16¸ö¹şÏ£±íÏîµÄÁ´±íÍ·³õÊ¼»¯
+   //16ä¸ªå“ˆå¸Œè¡¨é¡¹çš„é“¾è¡¨å¤´åˆå§‹åŒ–
     for (ul_loop = 0; ul_loop < MAC_VAP_USER_HASH_MAX_VALUE; ul_loop++)
     {
         oal_dlist_init_head(&(pst_mac_vap->pst_vap_proxyarp->ast_ipv4_head[ul_loop]));
@@ -100,7 +100,7 @@ oal_void hmac_proxy_arp_init(mac_vap_stru *pst_mac_vap)
 }
 
 
-//Í¨¹ıipv4µÄµØÖ·¹şÏ£Ó³Éä£¬²éÕÒ¶ÔÓ¦µÄmacµØÖ·
+//é€šè¿‡ipv4çš„åœ°å€å“ˆå¸Œæ˜ å°„ï¼ŒæŸ¥æ‰¾å¯¹åº”çš„macåœ°å€
 oal_err_code_enum_uint32 hmac_proxy_get_mac_by_ipv4(mac_vap_stru *pst_mac_vap, oal_uint32 ul_ipv4, oal_uint8 *puc_mac)
 {
     oal_uint32                  ul_user_hash_value;
@@ -115,14 +115,14 @@ oal_err_code_enum_uint32 hmac_proxy_get_mac_by_ipv4(mac_vap_stru *pst_mac_vap, o
         return OAL_ERR_CODE_PTR_NULL;
     }
 
-    //¼ÆËãipv4µØÖ·µÄ¹şÏ£Öµ
+    //è®¡ç®—ipv4åœ°å€çš„å“ˆå¸Œå€¼
     ul_user_hash_value = HMAC_PROXY_IPV4_HASH(ul_ipv4);
 
-    //±éÀú¸Ã¹şÏ£Öµ¶ÔÓ¦µÄÁ´±í£¬²éÕÒ¶ÔÓ¦µÄipv4µØÖ·
+    //éå†è¯¥å“ˆå¸Œå€¼å¯¹åº”çš„é“¾è¡¨ï¼ŒæŸ¥æ‰¾å¯¹åº”çš„ipv4åœ°å€
     OAL_DLIST_SEARCH_FOR_EACH(pst_entry, &(pst_mac_vap->pst_vap_proxyarp->ast_ipv4_head[ul_user_hash_value]))
     {
         pst_hash = (hmac_proxy_ipv4_hash_stru *)pst_entry;
-        //Èç¹ûÕÒµ½ÁË¶ÔÓ¦µÄipv4µØÖ·£¬¾Í½«macµØÖ·¿½±´µ½puc_macÖĞ
+        //å¦‚æœæ‰¾åˆ°äº†å¯¹åº”çš„ipv4åœ°å€ï¼Œå°±å°†macåœ°å€æ‹·è´åˆ°puc_macä¸­
         if (pst_hash->ul_ipv4 != ul_ipv4)
         {
             continue;
@@ -135,7 +135,7 @@ oal_err_code_enum_uint32 hmac_proxy_get_mac_by_ipv4(mac_vap_stru *pst_mac_vap, o
 
     return OAL_FAIL;
 }
-//½«ipv4µÄµØÖ·´Óhash±íÖĞÉ¾³ı
+//å°†ipv4çš„åœ°å€ä»hashè¡¨ä¸­åˆ é™¤
 oal_err_code_enum_uint32 hmac_proxy_remove_ipv4(mac_vap_stru *pst_mac_vap, oal_uint32 ul_ipv4)
 {
     oal_uint32                  ul_user_hash_value;
@@ -154,13 +154,13 @@ oal_err_code_enum_uint32 hmac_proxy_remove_ipv4(mac_vap_stru *pst_mac_vap, oal_u
         return OAL_SUCC;
     }
     
-    //¼ÆËãipv4µØÖ·µÄ¹şÏ£Öµ
+    //è®¡ç®—ipv4åœ°å€çš„å“ˆå¸Œå€¼
     ul_user_hash_value = HMAC_PROXY_IPV4_HASH(ul_ipv4);
-    //±éÀú¸Ã¹şÏ£Öµ¶ÔÓ¦µÄÁ´±í£¬²éÕÒ¶ÔÓ¦µÄipv4µØÖ·
+    //éå†è¯¥å“ˆå¸Œå€¼å¯¹åº”çš„é“¾è¡¨ï¼ŒæŸ¥æ‰¾å¯¹åº”çš„ipv4åœ°å€
     OAL_DLIST_SEARCH_FOR_EACH_SAFE(pst_entry, pst_dlist_tmp, &(pst_mac_vap->pst_vap_proxyarp->ast_ipv4_head[ul_user_hash_value]))
     {
         pst_hash = (hmac_proxy_ipv4_hash_stru *)pst_entry;
-        //Èç¹ûÕÒµ½ÁË¶ÔÓ¦µÄipv4µØÖ·£¬¾Í½«¸Ã½Úµã´ÓÁ´±íÖĞÉ¾³ı£¬²¢ÊÍ·ÅÄÚ´æ
+        //å¦‚æœæ‰¾åˆ°äº†å¯¹åº”çš„ipv4åœ°å€ï¼Œå°±å°†è¯¥èŠ‚ç‚¹ä»é“¾è¡¨ä¸­åˆ é™¤ï¼Œå¹¶é‡Šæ”¾å†…å­˜
         if (pst_hash->ul_ipv4 != ul_ipv4)
         {
             continue;
@@ -174,7 +174,7 @@ oal_err_code_enum_uint32 hmac_proxy_remove_ipv4(mac_vap_stru *pst_mac_vap, oal_u
     return OAL_SUCC;
 }
 
-//½«ipv4µÄµØÖ·¼ÓÈëhash±í£¬²¢¼ÇÂ¼ÏàÓ¦µÄmacµØÖ·
+//å°†ipv4çš„åœ°å€åŠ å…¥hashè¡¨ï¼Œå¹¶è®°å½•ç›¸åº”çš„macåœ°å€
 oal_err_code_enum_uint32 hmac_proxy_add_ipv4(mac_vap_stru *pst_mac_vap, oal_uint32 ul_ipv4, oal_uint8 *puc_mac)
 {
     oal_uint32                  ul_user_hash_value;
@@ -190,7 +190,7 @@ oal_err_code_enum_uint32 hmac_proxy_add_ipv4(mac_vap_stru *pst_mac_vap, oal_uint
         return OAL_ERR_CODE_PTR_NULL;
     }
 
-    /* ²éÑ¯ÊÇ·ñ´æÔÚ */
+    /* æŸ¥è¯¢æ˜¯å¦å­˜åœ¨ */
     en_exist = hmac_proxy_get_mac_by_ipv4(pst_mac_vap, ul_ipv4, auc_mac);
     if (OAL_SUCC == en_exist)
     {
@@ -198,7 +198,7 @@ oal_err_code_enum_uint32 hmac_proxy_add_ipv4(mac_vap_stru *pst_mac_vap, oal_uint
         {
             return OAL_SUCC;
         }
-        /* Èç¹ûÀ´×Ô²»Í¬µÄmac£¬Ôò½«Ç°Ãæ¼ÇÂ¼µÄ½áµãÉ¾³ı£¬ºóÃæÁ÷³Ì½«ĞÂµÄ½áµã¼ÓÈë */
+        /* å¦‚æœæ¥è‡ªä¸åŒçš„macï¼Œåˆ™å°†å‰é¢è®°å½•çš„ç»“ç‚¹åˆ é™¤ï¼Œåé¢æµç¨‹å°†æ–°çš„ç»“ç‚¹åŠ å…¥ */
         hmac_proxy_remove_ipv4(pst_mac_vap, ul_ipv4);
     }
 
@@ -207,7 +207,7 @@ oal_err_code_enum_uint32 hmac_proxy_add_ipv4(mac_vap_stru *pst_mac_vap, oal_uint
         return OAL_ERR_CODE_ARRAY_OVERFLOW;
     }
 
-    /* ÉêÇëÄÚ´æ */
+    /* ç”³è¯·å†…å­˜ */
     pst_hash = OAL_MEM_ALLOC(OAL_MEM_POOL_ID_LOCAL, OAL_SIZEOF(hmac_proxy_ipv4_hash_stru), OAL_TRUE);
     if (OAL_PTR_NULL == pst_hash)
     {
@@ -215,21 +215,21 @@ oal_err_code_enum_uint32 hmac_proxy_add_ipv4(mac_vap_stru *pst_mac_vap, oal_uint
         return OAL_ERR_CODE_PTR_NULL;
     }
 
-    /* ÌîĞ´ */
+    /* å¡«å†™ */
     pst_hash->ul_ipv4 = ul_ipv4;
     oal_memcopy(pst_hash->auc_mac, puc_mac, OAL_MAC_ADDR_LEN);
 
-    /* ¼ÓÈëhash±í */
+    /* åŠ å…¥hashè¡¨ */
     ul_user_hash_value = HMAC_PROXY_IPV4_HASH(ul_ipv4);
     oal_dlist_add_head(&(pst_hash->st_entry), &(pst_mac_vap->pst_vap_proxyarp->ast_ipv4_head[ul_user_hash_value]));
-    //¼ÇÂ¼ipv4µØÖ·µÄ¸öÊı
+    //è®°å½•ipv4åœ°å€çš„ä¸ªæ•°
     pst_mac_vap->pst_vap_proxyarp->uc_ipv4_num++;
 
     return OAL_SUCC;
 }
 
 
-//É¾³ı¹şÏ£½ÚµãµÄÊı¾İ½á¹¹£¬Ò»¹²16¸ö
+//åˆ é™¤å“ˆå¸ŒèŠ‚ç‚¹çš„æ•°æ®ç»“æ„ï¼Œä¸€å…±16ä¸ª
 oal_void hmac_proxy_exit(mac_vap_stru *pst_mac_vap)
 {
     oal_dlist_head_stru        *pst_entry;
@@ -243,7 +243,7 @@ oal_void hmac_proxy_exit(mac_vap_stru *pst_mac_vap)
     {
         return;
     }
-    //É¾³ıipv4µÄ¹şÏ£½Úµã
+    //åˆ é™¤ipv4çš„å“ˆå¸ŒèŠ‚ç‚¹
     for (ul_loop = 0; ul_loop < MAC_VAP_USER_HASH_MAX_VALUE; ul_loop++)
     {
         OAL_DLIST_SEARCH_FOR_EACH_SAFE(pst_entry, pst_dlist_tmp, &(pst_mac_vap->pst_vap_proxyarp->ast_ipv4_head[ul_loop]))
